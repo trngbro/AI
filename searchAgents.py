@@ -35,19 +35,20 @@ class UCS():
     
     def getPath(self, src: list, dst: list, parents: dict):
         path = []
-        path2= []
+        pathConvert= []
         x = dst
         while x != -1:
             path.append(x)
             x = parents[str(x)]
         path.reverse()
         
-        for i in range(0,len(path)-1):
-            if path[i][0] > path[i+1][0]: path2.append("N")
-            elif path[i][0] < path[i+1][0]: path2.append("S")
-            elif path[i][1] > path[i+1][1]: path2.append("W")
-            else: path2.append("E")
-        return path2
+        for i in range(0,len(path)-2):
+            if path[i][0] > path[i+1][0]: pathConvert.append("N")
+            elif path[i][0] < path[i+1][0]: pathConvert.append("S")
+            elif path[i][1] > path[i+1][1]: pathConvert.append("W")
+            else: pathConvert.append("E")
+        pathConvert.append("Stop")
+        return pathConvert
     
 ucs = UCS()
 e,p = ucs.search(a, a.P, a.G)
