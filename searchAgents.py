@@ -70,3 +70,10 @@ class BFS(SearchStrategy):
             successors = g.getSuccessor()
             # Continues
        
+class DFS(SearchStrategy):
+    def search(self, g: Graph, src: int, dst: int) -> tuple:
+        if(src==dst):
+            expanded = []
+            path = [src]
+            return expanded, path
+        return super().search(g, src, dst)
