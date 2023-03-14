@@ -18,7 +18,6 @@ class SingleFoodSearchProblem:
         if j != len(self.arr[0]) -1 : a.append([i,j+1])
 
         [b.append(i) for i in a if self.arr[i[0]][i[1]] != "%"]
-        print(b)
         return b
         
     
@@ -43,10 +42,7 @@ class SingleFoodSearchProblem:
             print(i)
         print(self.P)
         print(self.G)
-        
-a = SingleFoodSearchProblem()
-a.load_from_file("pacman_single01.txt")
-a.successor([3,11])
+
 
 
 

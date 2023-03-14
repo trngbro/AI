@@ -1,48 +1,32 @@
 from fringes import *
+from problem import *
 
-class Graph:
-    def __init__(self):
-        self.AL = dict() # adjacency list
-        self.V = 0
-        self.E = 0
-        self.H = dict()
+a = SingleFoodSearchProblem()
+a.load_from_file("pacman_single01.txt")
 
-    def __str__(self):
-        res = 'V: %d, E: %d\n'%(self.V, self.E)
-        for u, neighbors in self.AL.items():
-            line = '%d: %s\n'%(u, str(neighbors))
-            res += line
-        for u, h in self.H.items():
-            line = 'h(%d) = %d\n'%(u, h)
-        return res
-
-    def print(self):
-        print(str(self))
-
-    def load_from_file(self, filename):
-        # Read file
-        # if os.path.exists(filename):
-        #   with open(filename) as g:
-        #     self.V, self.E = [int(it) for it in g.readline().split()]
-        #     for i in range(self.E):
-        #       line = g.readline()
-        #       u, v, w = [int(it) for it in line.strip().split()]
-        #       if u not in self.AL:
-        #         self.AL[u] = []
-        #       self.AL[u].append((v, w))
-        #     for i in range(self.V):
-        #       line = g.readline()
-        #       u, h = [int(it) for it in line.strip().split()]
-        #       self.H[u] = h
-        return None
-
-class SearchStrategy:
-    def search(self, g:Graph, src:int, dst:int) -> tuple:
+class UCS():
+    def search(self, map: SingleFoodSearchProblem, src: list, dst: list):
+        pq = PriorityQueue()
+        pq.enqueue((0, src))
         expanded = []
         path = []
+        
+        while not pq.isEmpty():
+            cur_w, cur = pq.dequeue()
+            expanded.append(cur)
+        
+            if cur == dst: return expanded, path
+            
+            successors = map.successor(cur)
+            for v in successors:
+                if v not in expanded and not pq.contain(v):
+                    pq.enqueue((cur_w + 1, v))
+                elif pq.contain(v) and pq.getPriority(v) > cur_w + 1:
+                    pq.updatePriority(v, cur_w + 1)
+        
         return expanded, path
     
-    def get_path(self, src:int, dst:int, parents:dict) -> list:
+    def getPath(self, src: list, dst: list, parents: dict):
         path = []
         x = dst
         while x != -1:
@@ -50,23 +34,7 @@ class SearchStrategy:
             x = parents[x]
         path.reverse()
         return path
-    
-class BFS(SearchStrategy):
-    def search(self, g: Graph, src: int, dst: int) -> tuple:
-        if(src==dst):
-            expanded = []
-            path = [src]
-            return expanded, path
-        q = Queue()
-        q.enqueue(src)
-        expanded = []
-        parents = dict()
-        parents[src] = -1
-        
-        while not q.isEmpty():
-            cur = q.dequeue()
-            expanded.append(cur)
-
-            successors = g.getSuccessor()
-            # Continues
-       
+ucs = UCS()
+e,p = ucs.search(a, a.P, a.G)
+print(e)
+print(p)
