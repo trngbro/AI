@@ -52,6 +52,3 @@ class UCS():
 ucs = UCS()
 e,p = ucs.search(a, a.P, a.G)
 print(p)
-# av =[1,2]
-# ab = str(av)
-# print(int(ab[4])+int(ab[1]))
