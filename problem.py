@@ -18,7 +18,7 @@ class SingleFoodSearchProblem:
         [b.append(i) for i in a if self.arr[i[0]][i[1]] != "%"]
         return b
     
-    def load_from_file(self, filename):
+    def load_from_file(self, filename) -> None:
         if os.path.exists(filename):
             with open(filename) as g:
                 i = 0
@@ -34,6 +34,37 @@ class SingleFoodSearchProblem:
                             self.G.append(j)
                     self.arr.append(a)
                     i+=1
-
+    
+    def __str__(self) -> str:
+        for i in self.arr:
+            s = ""
+            for j in i:
+                s += j
+            print(s)
+              
+    def animate(self, actions) -> None:
+        cur = self.P
+        self.__str__()
+        for i in actions:
+            os.system("cls")
+            os.system("clear")
+            self.__str__()
+            self.arr[cur[0]][cur[1]] = " "
+            if i == "Stop":
+                break
+            if i == "N": 
+                cur[0] -= 1
+                self.arr[cur[0]][cur[1]] = "P"
+            if i == "S": 
+                cur[0] += 1
+                self.arr[cur[0]][cur[1]] = "P"
+            if i == "W": 
+                cur[1] -= 1
+                self.arr[cur[0]][cur[1]] = "P"
+            if i == "E": 
+                cur[1] += 1
+                self.arr[cur[0]][cur[1]] = "P"
+            enter = input("Press Enter")
+            
 
 

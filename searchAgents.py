@@ -2,7 +2,7 @@ from fringes import *
 from problem import *
 
 #get Path
-def getPath(dst: list, parents: dict):
+def getPath(dst: list, parents: dict) -> list:
     path = []
     pathConvert= []
     x = dst
@@ -12,7 +12,7 @@ def getPath(dst: list, parents: dict):
         x = parents[str(x)]
     path.reverse()
     
-    for i in range(0,len(path)-2):
+    for i in range(0,len(path)-1):
         if path[i][0] > path[i+1][0]: pathConvert.append("N")
         elif path[i][0] < path[i+1][0]: pathConvert.append("S")
         elif path[i][1] > path[i+1][1]: pathConvert.append("W")
@@ -22,7 +22,7 @@ def getPath(dst: list, parents: dict):
     return pathConvert
     
 #BFS function
-def BFS(map: SingleFoodSearchProblem):
+def BFS(map: SingleFoodSearchProblem) -> list:
     if map.P == map.G:
         expanded = []
         path = [map.P]
@@ -51,7 +51,7 @@ def BFS(map: SingleFoodSearchProblem):
     return path
     
 #DFS function
-def DFS(map: SingleFoodSearchProblem):
+def DFS(map: SingleFoodSearchProblem) -> list:
     visited = []
     parents = {str(map.P): -1}
     stack = [map.P]
@@ -74,7 +74,7 @@ def DFS(map: SingleFoodSearchProblem):
 
 
 #UCS function
-def UCS(map: SingleFoodSearchProblem):
+def UCS(map: SingleFoodSearchProblem) -> list:
     pq = PriorityQueue()
     pq.enqueue((0, map.P))
     expanded = []
@@ -104,8 +104,10 @@ def UCS(map: SingleFoodSearchProblem):
 
 
 a = SingleFoodSearchProblem()
-a.load_from_file("pacman_single01.txt")
+a.load_from_file("pacman_single02.txt")
 
-print(BFS(a))
-print(DFS(a))
-print(UCS(a))
+# p = BFS(a)
+# a.animate(p)
+
+p2 = DFS(a)
+a.animate(p2)
