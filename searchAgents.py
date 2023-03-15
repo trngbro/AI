@@ -2,6 +2,54 @@ from fringes import *
 from problem import *
 from typing import Tuple, List
 
+class BFS():
+    def search(self,map: SingleFoodSearchProblem, src: list, dst: list):
+        if src == dst:
+            expanded = []
+            path = [src]
+            return expanded,path
+        q = Queue()  
+        q.enqueue(src)
+        expanded = []
+        path = []
+        # parents = dict()
+        parents = {str(src): -1}
+        while not q.isEmpty():
+            cur = q.dequeue()
+            expanded.append(cur)
+            successors = map.successor(cur)
+            for v in successors:                
+                if v not in expanded and not q.contain(v):
+                    if v == dst:
+                        parents[str(v)] = cur
+                        path = self.getPath(src, dst, parents)
+                        return expanded,path
+                    parents[str(v)] = cur
+                    q.enqueue(v)
+        path = self.getpath(src, dst, parents)
+        return expanded,path
+    
+    def getPath(self, src: list, dst: list, parents: dict):
+        path = []
+        path2= []
+        x = dst
+        while x != -1:
+            path.append(x)
+            x = parents[str(x)]
+        path.reverse()
+        
+        for i in range(0,len(path)-1):
+            if path[i][0] > path[i+1][0]: path2.append("N")
+            elif path[i][0] < path[i+1][0]: path2.append("S")
+            elif path[i][1] > path[i+1][1]: path2.append("W")
+            else: path2.append("E")
+        return path2
+
+# a = SingleFoodSearchProblem()
+# a.load_from_file("pacman_single01.txt")
+# bfs = BFS()
+# e, p = bfs.search(a,a.P,a.G)
+# print(p)
 
 class UCS():
     def search(self, map: SingleFoodSearchProblem, src: list, dst: list):
