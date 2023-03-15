@@ -4,8 +4,6 @@ class SingleFoodSearchProblem:
     arr = [] #mang 2 chieu
     P = [] #diem P
     G = [] #goal
-    def __init__(self) -> None:
-        pass
     
     def successor(self,node):
         i = node[0]
@@ -19,20 +17,6 @@ class SingleFoodSearchProblem:
 
         [b.append(i) for i in a if self.arr[i[0]][i[1]] != "%"]
         return b
-    
-    def successor_2(self, node):
-        i, j = node
-        successors = []
-        if i > 0 and self.arr[i-1][j] != "%":
-            successors.append((i-1, j))
-        if i < len(self.arr)-1 and self.arr[i+1][j] != "%":
-            successors.append((i+1, j))
-        if j > 0 and self.arr[i][j-1] != "%":
-            successors.append((i, j-1))
-        if j < len(self.arr[0])-1 and self.arr[i][j+1] != "%":
-            successors.append((i, j+1))
-        return successors
-        
     
     def load_from_file(self, filename):
         if os.path.exists(filename):
@@ -50,11 +34,6 @@ class SingleFoodSearchProblem:
                             self.G.append(j)
                     self.arr.append(a)
                     i+=1
-        #print 
-        for i in self.arr:
-            print(i)
-        print(self.P)
-        print(self.G)
 
 
 
