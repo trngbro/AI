@@ -54,7 +54,7 @@ class PriorityQueue():
         self.items.sort()
         
     def dequeue(self):
-        return self.items.pop()
+        return self.items.pop(0)
     
     def contain(self, this):
         return this in [it[1] for it in self.items]
