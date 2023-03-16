@@ -103,11 +103,25 @@ def UCS(map: SingleFoodSearchProblem) -> list:
 
 
 
-a = SingleFoodSearchProblem()
-a.load_from_file("input/pacman_single02.txt")
+# a = SingleFoodSearchProblem()
+# a.load_from_file("input/pacman_single02.txt")
 
-# p = BFS(a)
-# a.animate(p)
+# # p = BFS(a)
+# # a.animate(p)
 
-p2 = BFS(a)
-a.animate(p2)
+# p2 = BFS(a)
+# a.animate(p2)
+
+
+
+def euclidean(state: SingleFoodSearchProblem):
+    return ((state.P[0] - state.G[0])**2 + (state.P[1] - state.G[1])**2)**0.5
+
+def manhattan(state: SingleFoodSearchProblem):
+    return abs(state.P[0] + state.G[0]) + abs(state.P[1] - state.G[1])
+
+pacman = SingleFoodSearchProblem()
+pacman.load_from_file("input/pacman_single01.txt")
+
+print(euclidean(pacman))
+print(manhattan(pacman))

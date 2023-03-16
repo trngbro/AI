@@ -1,34 +1,6 @@
 import os
-import numpy as np
+import random
 
-class EightQueenProblem:
-    def __init__(self):
-        self.state = []
-
-    def read_input(self, file_path):
-        with open(file_path, 'r') as f:
-            for line in f:
-                row = [0 if c == '0' else 1 for c in line.split()]
-                self.state.append(row)
-
-    def print_board(self):
-        for row in self.state:
-            print(' '.join(['Q' if c == 1 else '0' for c in row]))
-
-    def h(self, state):
-        def under_attack(row, col):
-            return any(state[i][col] or
-                       state[row][i] or
-                       state[row+i][col+i] or
-                       state[row+i][col-i]
-                       for i in range(8))
-
-        attacked = 0
-        for row, col in enumerate(state):
-            if under_attack(row, col):
-                attacked += 1
-        return attacked
-            
 class SingleFoodSearchProblem:
     arr = [] #mang 2 chieu
     P = [] #diem P
@@ -95,7 +67,15 @@ class SingleFoodSearchProblem:
                 self.arr[cur[0]][cur[1]] = "P"
             enter = input("Press Enter")
             
-import random
+            
+            
+    def euclidean_distance(self):
+        return ((self.P[0] - self.G[0])**2 + (self.P[1] - self.G[1])**2)**0.5
+    
+    def manhattan_distance(self):
+        return abs(self.P[0] - self.G[0]) + abs(self.P[1] - self.G[1])
+            
+
 
 class EightQueenProblem:
 
@@ -148,12 +128,14 @@ class EightQueenProblem:
                 break
             self.state = neighbors[neighbor_h.index(min(neighbor_h))]
         return self.state
+    
+    
             
-problem = EightQueenProblem()
-state = [0, 2, 4, 1, 6, 3, 7, 5]
-h_value = problem.h(state)
-print("Heuristic value:", h_value)
-problem = EightQueenProblem()
-problem.read_board("input/eight_queens01.txt")
-best_state = problem.hill_climbing_search()
-problem.print_board(best_state)
+# problem = EightQueenProblem()
+# state = [7, 7, 7, 7, 7, 7, 7, 7]
+# h_value = problem.h(state)
+# print("Heuristic value:", h_value)
+# problem = EightQueenProblem()
+# problem.read_board("input/eight_queens04.txt")
+# best_state = problem.hill_climbing_search()
+# problem.print_board(best_state)
