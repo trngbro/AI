@@ -68,3 +68,30 @@ class SingleFoodSearchProblem:
             
 
 
+class EightQueenProblem:
+    def __init__(self):
+        self.state = []
+
+    def read_input(self, file_path):
+        with open(file_path, 'r') as f:
+            for line in f:
+                row = [0 if c == '0' else 1 for c in line.split()]
+                self.state.append(row)
+
+    def print_board(self):
+        for row in self.state:
+            print(' '.join(['Q' if c == 1 else '0' for c in row]))
+
+    def h(self, state):
+        def under_attack(row, col):
+            return any(state[i][col] or
+                       state[row][i] or
+                       state[row+i][col+i] or
+                       state[row+i][col-i]
+                       for i in range(8))
+
+        attacked = 0
+        for row, col in enumerate(state):
+            if under_attack(row, col):
+                attacked += 1
+        return attacked

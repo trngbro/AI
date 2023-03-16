@@ -109,5 +109,5 @@ a.load_from_file("pacman_single02.txt")
 # p = BFS(a)
 # a.animate(p)
 
-p2 = DFS(a)
+p2 = BFS(a)
 a.animate(p2)
