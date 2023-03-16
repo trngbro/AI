@@ -1,12 +1,29 @@
 from fringes import *
 from problem import *
-from typing import Tuple, List
 
-
-class UCS():
-    def search(self, map: SingleFoodSearchProblem, src: list, dst: list):
-        pq = PriorityQueue()
-        pq.enqueue((0, src))
+#get Path
+def getPath(dst: list, parents: dict) -> list:
+    path = []
+    pathConvert= []
+    x = dst
+    
+    while x != -1:
+        path.append(x)
+        x = parents[str(x)]
+    path.reverse()
+    
+    for i in range(0,len(path)-1):
+        if path[i][0] > path[i+1][0]: pathConvert.append("N")
+        elif path[i][0] < path[i+1][0]: pathConvert.append("S")
+        elif path[i][1] > path[i+1][1]: pathConvert.append("W")
+        else: pathConvert.append("E")
+    pathConvert.append("Stop")
+    
+    return pathConvert
+    
+#BFS function
+def BFS(map: SingleFoodSearchProblem) -> list:
+    if map.P == map.G:
         expanded = []
         parents = {str(src): -1}
         path = []
@@ -97,64 +114,9 @@ class DFS():
         return pathConvert
 
 
-# a = SingleFoodSearchProblem()
-# a.load_from_file("pacman_single01.txt")
+a = SingleFoodSearchProblem()
+a.load_from_file("pacman_single01.txt")
 
-# dfs = DFS()
-# visited, path = dfs.search(a, tuple(a.P), tuple(a.G))
-# print(path)
-
-
-
-class BFS():
-    def search(self, problem: SingleFoodSearchProblem, start: Tuple[int, int], goal: Tuple[int, int]) -> Tuple[List[Tuple[int, int]], List[str]]:
-        queue = Queue()
-        queue.enqueue((start, [], [])) # node, path, actions
-        visited = set()
-        
-        while not queue.isEmpty():
-            node, path, actions = queue.dequeue()
-            
-            if node == goal:
-                return path + [node], actions
-            
-            if tuple(node) in visited:
-                continue
-            visited.add(tuple(node))
-            
-            successors = problem.successor(node)
-            for next_node, action in successors:
-                if next_node not in visited:
-                    queue.enqueue((next_node, path + [node], actions + [action]))
-        
-        return [], []
-    
-    def getPath(self, src: Tuple[int, int], dst: Tuple[int, int], path: List[Tuple[int, int]]):
-        pathConvert = []
-        for i in range(len(path)-1):
-            if path[i][0] > path[i+1][0]: pathConvert.append("N")
-            elif path[i][0] < path[i+1][0]: pathConvert.append("S")
-            elif path[i][1] > path[i+1][1]: pathConvert.append("W")
-            else: pathConvert.append("E")
-        pathConvert.append("Stop")
-        return pathConvert
-    
-
-# Example usage
-# problem = SingleFoodSearchProblem()
-# problem.load_from_file("pacman_single01.txt")
-# bfs = BFS()
-# path, actions = bfs.search(problem, problem.P, problem.G)
-# print(actions)
-
-
-
-from problem import EightQueenProblem
-
-# create an instance of EightQueenProblem
-problem = EightQueenProblem()
-# read the input from file
-problem.read_input('eight_queens01.txt')
-problem.print_board()
-h_value = problem.h(problem.state)
-print(h_value)
+dfs = DFS()
+visited, path = dfs.search(a, tuple(a.P), tuple(a.G))
+print(path)
