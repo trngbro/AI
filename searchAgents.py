@@ -104,7 +104,7 @@ def UCS(map: SingleFoodSearchProblem) -> list:
 
 
 a = SingleFoodSearchProblem()
-a.load_from_file("pacman_single02.txt")
+a.load_from_file("input/pacman_single02.txt")
 
 # p = BFS(a)
 # a.animate(p)

@@ -124,3 +124,9 @@ class EightQueenProblem:
             if under_attack(row, col):
                 attacked += 1
         return attacked
+    
+queen = EightQueenProblem()
+
+queen.read_input("./input/eight_queens01.txt")
+queen.print_board()
+queen.h(queen.state)
