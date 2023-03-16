@@ -95,38 +95,65 @@ class SingleFoodSearchProblem:
                 self.arr[cur[0]][cur[1]] = "P"
             enter = input("Press Enter")
             
-
+import random
 
 class EightQueenProblem:
+
     def __init__(self):
-        self.state = []
+        self.state = None
+        self.n = 8
+            
+    def read_board(self, file_name):
+        with open(file_name, "r") as f:
+            lines = f.readlines()
+            self.initial_state = [[1 if c == "Q" else 0 for c in line.strip()] for line in lines]
 
-    def read_input(self, file_path):
-        with open(file_path, 'r') as f:
-            for line in f:
-                row = [0 if c == '0' else 1 for c in line.split()]
-                self.state.append(row)
 
-    def print_board(self):
-        for row in self.state:
-            print(' '.join(['Q' if c == 1 else '0' for c in row]))
+    def print_board(self, state):
+        for row in range(len(state)):
+            for col in range(len(state)):
+                if state[row] == col:
+                    print("Q ", end="")
+                else:
+                    print("0 ", end="")
+            print()
+
+
 
     def h(self, state):
-        def under_attack(row, col):
-            return any(state[i][col] or
-                       state[row][i] or
-                       state[row+i][col+i] or
-                       state[row+i][col-i]
-                       for i in range(8))
+        n = len(state)
+        count = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                if state[i] == state[j] or abs(state[i] - state[j]) == j - i:
+                    count += 1
+        return count
 
-        attacked = 0
-        for row, col in enumerate(state):
-            if under_attack(row, col):
-                attacked += 1
-        return attacked
-    
-queen = EightQueenProblem()
-
-queen.read_input("./input/eight_queens01.txt")
-queen.print_board()
-queen.h(queen.state)
+    def hill_climbing_search(self):
+        if self.state is None:
+            self.state = [random.randint(0, self.n - 1) for i in range(self.n)]
+        while True:
+            h = self.h(self.state)
+            neighbors = []
+            for col in range(self.n):
+                for row in range(self.n):
+                    if self.state[col] != row:
+                        neighbor = list(self.state)
+                        neighbor[col] = row
+                        neighbors.append(neighbor)
+            if not neighbors:
+                break
+            neighbor_h = [self.h(n) for n in neighbors]
+            if min(neighbor_h) >= h:
+                break
+            self.state = neighbors[neighbor_h.index(min(neighbor_h))]
+        return self.state
+            
+problem = EightQueenProblem()
+state = [0, 2, 4, 1, 6, 3, 7, 5]
+h_value = problem.h(state)
+print("Heuristic value:", h_value)
+problem = EightQueenProblem()
+problem.read_board("input/eight_queens01.txt")
+best_state = problem.hill_climbing_search()
+problem.print_board(best_state)
