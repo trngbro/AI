@@ -151,7 +151,38 @@ def gbfs(problem:SingleFoodSearchProblem):
 
 
 
+# problem = SingleFoodSearchProblem()
+# problem.load_from_file("input/pacman_single01.txt")
+# actions = gbfs(problem)
+# print(actions.tostring())
+
+
+
+def astar(problem:SingleFoodSearchProblem):
+    start_node = Node(state=problem.P, action=None, path_cost=0)
+
+    frontier = PriorityQueueHQ()
+    frontier.push(start_node, euclidean(problem.P, problem))
+
+    explored = set()
+
+    while not frontier.isEmpty():
+        node = frontier.pop()
+
+        if problem.isGoalState(node.state):
+            return node.getPath()
+
+        explored.add(tuple(node.state))
+        for child_state in problem.successor(node.state):
+            if tuple(child_state) not in explored:
+                child_node = Node(state=child_state, action='',
+                                  path_cost=euclidean(node.state, problem), parent=node)
+                f_value = child_node.path_cost + euclidean(child_state, problem)
+                frontier.push(child_node, f_value)
+
+    return None
+
 problem = SingleFoodSearchProblem()
 problem.load_from_file("input/pacman_single01.txt")
-actions = gbfs(problem)
-print(actions.tostring())
+actions = astar(problem)
+print(actions)

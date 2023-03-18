@@ -95,3 +95,24 @@ class PriorityQueueHQ:
         
     def tostring(self):
         return str(self.heap)
+    
+class Node:
+    def __init__(self, state, parent=None, action=None, path_cost=0):
+        self.state = state
+        self.parent = parent
+        self.action = action
+        self.path_cost = path_cost
+        
+    def __str__(self):
+        return f"State: {self.state}, Path Cost: {self.path_cost}, Path: {self.getPath()}"
+        
+    def getState(self):
+        return self.state
+
+    def getPath(self):
+        node, path_back = self, []
+        while node:
+            if node.action:
+                path_back.append(node.action)
+            node = node.parent
+        return list(reversed(path_back))
