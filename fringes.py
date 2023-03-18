@@ -92,3 +92,6 @@ class PriorityQueueHQ:
 
     def update(self, item, priority):
         self.push(item, priority)
+        
+    def tostring(self):
+        return str(self.heap)

@@ -126,41 +126,32 @@ pacman.load_from_file("input/pacman_single01.txt")
 print(euclidean([4,5], pacman))
 # print(manhattan(pacman))
 
-def fn_heuristic(start, goal):
-    return ((start[0]-goal[0])**2 + (start[1]-goal[1])**2)**0.5
 
-def gbfs(problem: SingleFoodSearchProblem):
-    start = problem.P
-    goal = problem.G
-
-    fringes = PriorityQueueHQ()
-    fringes.push([start], fn_heuristic(start, goal))
-
+def gbfs(problem:SingleFoodSearchProblem):
+    start_state = problem.P
     visited = set()
-
-    while not fringes.isEmpty():
-        path = fringes.pop()
-        node = path[-1]
-
-        if node == goal:
-            return path[1:]
-
-        if tuple(node) in visited:
-            continue
-
-        visited.add(tuple(node))
-
-        for successor in problem.successor(node):
-            if successor[0] not in visited:
-                new_path = path[:]
-                new_path.append(successor[1])
-                fringes.push(new_path, fn_heuristic(successor[0], goal))
-
-    return []  # Failed to find a path
+    frontier = PriorityQueueHQ()
+    frontier.push(start_state, euclidean(start_state, problem))
+    
+    while not frontier.isEmpty():
+        state = frontier.pop()
+        
+        if problem.isGoalState(state):
+            return frontier
+        
+        if tuple(state) not in visited:
+            visited.add(tuple(state))
+            successors = problem.successor(state)
+            
+            for successor in successors:
+                if tuple(successor) not in visited:
+                    frontier.push(successor, euclidean(successor, problem))
+    
+    return None
 
 
 
-# problem = SingleFoodSearchProblem()
-# problem.load_from_file("input/pacman_single01.txt")
-# actions = gbfs(problem)
-# print(actions)
+problem = SingleFoodSearchProblem()
+problem.load_from_file("input/pacman_single01.txt")
+actions = gbfs(problem)
+print(actions.tostring())

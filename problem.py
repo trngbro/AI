@@ -19,6 +19,9 @@ class SingleFoodSearchProblem:
         [b.append(i) for i in a if self.arr[i[0]][i[1]] != "%"]
         return b
     
+    def isGoalState(self, node):
+        return self.G[0]==node[0] and self.G[1]==node[1]
+    
     def load_from_file(self, filename) -> None:
         if os.path.exists(filename):
             with open(filename) as g:
@@ -119,6 +122,9 @@ class EightQueenProblem:
             if min(neighbor_h) >= h:
                 break
             self.state = neighbors[neighbor_h.index(min(neighbor_h))]
+            '''Mở xem chi tiết từng bước đạt được'''
+            # self.print_board(self.state)
+            # print("\n\n")
         return self.state
     
     
