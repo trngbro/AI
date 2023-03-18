@@ -123,8 +123,8 @@ def manhattan(state: list, map: SingleFoodSearchProblem):
 pacman = SingleFoodSearchProblem()
 pacman.load_from_file("input/pacman_single01.txt")
 
-print(euclidean([4,5], pacman))
-# print(manhattan(pacman))
+# print(euclidean([4,5], pacman))
+# print(manhattan([4,5], pacman))
 
 
 def gbfs(problem:SingleFoodSearchProblem):
