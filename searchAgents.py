@@ -114,14 +114,53 @@ def UCS(map: SingleFoodSearchProblem) -> list:
 
 
 
-def euclidean(state: SingleFoodSearchProblem):
-    return ((state.P[0] - state.G[0])**2 + (state.P[1] - state.G[1])**2)**0.5
+def euclidean(state: list, map: SingleFoodSearchProblem):
+    return ((state[0] - map.G[0])**2 + (state[1] - map.G[1])**2)**0.5
 
-def manhattan(state: SingleFoodSearchProblem):
-    return abs(state.P[0] + state.G[0]) + abs(state.P[1] - state.G[1])
+def manhattan(state: list, map: SingleFoodSearchProblem):
+    return abs(state[0] + map.G[0]) + abs(state[1] - map.G[1])
 
 pacman = SingleFoodSearchProblem()
 pacman.load_from_file("input/pacman_single01.txt")
 
-print(euclidean(pacman))
-print(manhattan(pacman))
+print(euclidean([4,5], pacman))
+# print(manhattan(pacman))
+
+def fn_heuristic(start, goal):
+    return ((start[0]-goal[0])**2 + (start[1]-goal[1])**2)**0.5
+
+def gbfs(problem: SingleFoodSearchProblem):
+    start = problem.P
+    goal = problem.G
+
+    fringes = PriorityQueueHQ()
+    fringes.push([start], fn_heuristic(start, goal))
+
+    visited = set()
+
+    while not fringes.isEmpty():
+        path = fringes.pop()
+        node = path[-1]
+
+        if node == goal:
+            return path[1:]
+
+        if tuple(node) in visited:
+            continue
+
+        visited.add(tuple(node))
+
+        for successor in problem.successor(node):
+            if successor[0] not in visited:
+                new_path = path[:]
+                new_path.append(successor[1])
+                fringes.push(new_path, fn_heuristic(successor[0], goal))
+
+    return []  # Failed to find a path
+
+
+
+# problem = SingleFoodSearchProblem()
+# problem.load_from_file("input/pacman_single01.txt")
+# actions = gbfs(problem)
+# print(actions)

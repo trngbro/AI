@@ -1,3 +1,5 @@
+import heapq
+
 class Queue:
     def __init__(self):
         self.items = []
@@ -70,3 +72,23 @@ class PriorityQueue():
         self.items.remove((p_w, v))
         self.items.append((w, v))
         self.items.sort()
+        
+
+
+class PriorityQueueHQ:
+    def __init__(self):
+        self.heap = []
+        self.count = 0
+
+    def push(self, item, priority):
+        heapq.heappush(self.heap, (priority, self.count, item))
+        self.count += 1
+
+    def pop(self):
+        return heapq.heappop(self.heap)[-1]
+
+    def isEmpty(self):
+        return len(self.heap) == 0
+
+    def update(self, item, priority):
+        self.push(item, priority)

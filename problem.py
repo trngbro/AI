@@ -67,14 +67,6 @@ class SingleFoodSearchProblem:
                 self.arr[cur[0]][cur[1]] = "P"
             enter = input("Press Enter")
             
-            
-            
-    def euclidean_distance(self):
-        return ((self.P[0] - self.G[0])**2 + (self.P[1] - self.G[1])**2)**0.5
-    
-    def manhattan_distance(self):
-        return abs(self.P[0] - self.G[0]) + abs(self.P[1] - self.G[1])
-            
 
 
 class EightQueenProblem:
