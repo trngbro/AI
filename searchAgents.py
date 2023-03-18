@@ -103,14 +103,14 @@ def UCS(map: SingleFoodSearchProblem) -> list:
 
 
 
-a = SingleFoodSearchProblem()
-a.load_from_file("input/pacman_single02.txt")
+# a = SingleFoodSearchProblem()
+# a.load_from_file("input/pacman_single02.txt")
 
 # # # p = BFS(a)
 # # # a.animate(p)
 
-p2 = BFS(a)
-a.animate(p2)
+# p2 = BFS(a)
+# a.animate(p2)
 
 
 def BFS_Multi(map: MultiFoodSearchProblem)-> list:
@@ -223,8 +223,21 @@ def euclidean(state: SingleFoodSearchProblem):
 def manhattan(state: SingleFoodSearchProblem):
     return abs(state.P[0] + state.G[0]) + abs(state.P[1] - state.G[1])
 
+def fn_manhattan(x: list, y: list):
+    return abs(x[0] + y[0]) + abs(x[1] - y[1])
+
 # pacman = SingleFoodSearchProblem()
 # pacman.load_from_file("input/pacman_single01.txt")
 
 # print(euclidean(pacman))
 # print(manhattan(pacman))
+
+def food_heuristic(state: MultiFoodSearchProblem):
+    foods = state.G
+    if(len(foods)==0): return 0
+    distances = ([fn_manhattan(state.P, food) for food in foods])
+    return sum(distances)
+    
+# a = MultiFoodSearchProblem()
+# a.load_from_file("input/pacman_multi02.txt")
+# print(food_heuristic(a))
