@@ -2,13 +2,16 @@ import os
 import random
 
 class SingleFoodSearchProblem:
-    arr = [] #mang 2 chieu
-    P = [] #diem P
-    G = [] #goal
+    arr = [] #map
+    P = [] #Initial state
+    G = [] #Goal
     
-    def successor(self,node):
-        i = node[0]
-        j = node[1]
+    def isGoal(self, state):
+        return state == self.G
+    
+    def successor(self,state):
+        i = state[0]
+        j = state[1]
         a = []
         b = []
         if i != 0: a.append([i-1,j])
