@@ -217,11 +217,11 @@ def getPathMulti(src: list, dst: list, parents: dict):
 # #print(p)
 
 
-def euclidean(state: SingleFoodSearchProblem):
-    return ((state.P[0] - state.G[0])**2 + (state.P[1] - state.G[1])**2)**0.5
+def euclidean(state: list, map: SingleFoodSearchProblem):
+    return ((state[0] - map.G[0])**2 + (state[1] - map.G[1])**2)**0.5
 
-def manhattan(state: SingleFoodSearchProblem):
-    return abs(state.P[0] + state.G[0]) + abs(state.P[1] - state.G[1])
+def manhattan(state: list, map: SingleFoodSearchProblem):
+    return abs(state[0] + map.G[0]) + abs(state[1] - map.G[1])
 
 def fn_manhattan(x: list, y: list):
     return abs(x[0] + y[0]) + abs(x[1] - y[1])
@@ -241,3 +241,62 @@ def food_heuristic(state: MultiFoodSearchProblem):
 # a = MultiFoodSearchProblem()
 # a.load_from_file("input/pacman_multi02.txt")
 # print(food_heuristic(a))
+
+def gbfs(problem:SingleFoodSearchProblem):
+    start_state = problem.P
+    visited = set()
+    frontier = PriorityQueueHQ()
+    frontier.push(start_state, euclidean(start_state, problem))
+    
+    while not frontier.isEmpty():
+        state = frontier.pop()
+        
+        if problem.isGoalState(state):
+            return frontier
+        
+        if tuple(state) not in visited:
+            visited.add(tuple(state))
+            successors = problem.successor(state)
+            
+            for successor in successors:
+                if tuple(successor) not in visited:
+                    frontier.push(successor, euclidean(successor, problem))
+    
+    return None
+
+
+
+# problem = SingleFoodSearchProblem()
+# problem.load_from_file("input/pacman_single01.txt")
+# actions = gbfs(problem)
+# print(actions.tostring())
+
+
+def astar(problem:SingleFoodSearchProblem):
+    start_node = Node(state=problem.P, action=None, path_cost=0)
+
+    frontier = PriorityQueueHQ()
+    frontier.push(start_node, euclidean(problem.P, problem))
+
+    explored = set()
+
+    while not frontier.isEmpty():
+        node = frontier.pop()
+
+        if problem.isGoalState(node.state):
+            return node.getPath()
+
+        explored.add(tuple(node.state))
+        for child_state in problem.successor(node.state):
+            if tuple(child_state) not in explored:
+                child_node = Node(state=child_state, action='',
+                                  path_cost=euclidean(node.state, problem), parent=node)
+                f_value = child_node.path_cost + euclidean(child_state, problem)
+                frontier.push(child_node, f_value)
+
+    return None
+
+problem = SingleFoodSearchProblem()
+problem.load_from_file("input/pacman_single01.txt")
+actions = astar(problem)
+print(actions)
