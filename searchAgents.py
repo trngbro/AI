@@ -1,7 +1,6 @@
 from fringes import *
 from problem import *
 
-
 ##Ex1
 #Single
 
@@ -241,6 +240,28 @@ def astar(problem : SingleFoodSearchProblem, fn_heuristic) -> list:
     
     return None  
     
+#YC2-4
+#Modify A* 
+
+def modifyAstar(problem, fn_heuristic) -> list:
+    expanded = []
+    parents = {str(problem.P): -1}
+    pq = PriorityQueue()
+    pq.enqueue((fn_heuristic(problem.P,problem),0 ,problem.P))
+    
+    while not pq.isEmpty():
+        h,c, cur = pq.dequeue()
+        expanded.append(cur)
+        if problem.isGoal(cur):
+            return getPath(problem.G, parents)
+        for s in problem.successor(cur):
+            if s not in expanded:
+                sc = c+1
+                pq.enqueue((fn_heuristic(s,problem)+sc,sc ,s))
+                parents[str(s)] = cur
+    
+    return None
+
 #yc2-5
 def gbfs(problem : SingleFoodSearchProblem, fn_heuristic) -> list:
     visited = [problem.P]

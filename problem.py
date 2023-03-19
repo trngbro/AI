@@ -24,9 +24,6 @@ class SingleFoodSearchProblem:
         [b.append(i) for i in a if self.map[i[0]][i[1]] != "%"]
         return b
     
-    def isGoalState(self, state):
-        return self.G[0]==state[0] and self.G[1]==state[1]
-    
     def load_from_file(self, filename) -> None:
         if os.path.exists(filename):
             with open(filename) as g:
@@ -196,14 +193,3 @@ class EightQueenProblem:
             # self.print_board(self.state)
             # print("\n\n")
         return self.state
-    
-    
-            
-# problem = EightQueenProblem()
-# state = [7, 7, 7, 7, 7, 7, 7, 7]
-# h_value = problem.h(state)
-# print("Heuristic value:", h_value)
-# problem = EightQueenProblem()
-# problem.read_board("input/eight_queens04.txt")
-# best_state = problem.hill_climbing_search()
-# problem.print_board(best_state)
