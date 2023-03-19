@@ -1,6 +1,10 @@
 from fringes import *
 from problem import *
 
+
+##Ex1
+#Single
+
 #get Path
 def getPath(dst: list, parents: dict) -> list:
     path = []
@@ -23,16 +27,15 @@ def getPath(dst: list, parents: dict) -> list:
     
 #BFS function
 def BFS(map: SingleFoodSearchProblem) -> list:
-    if map.P == map.G:
-        expanded = []
-        path = [map.P]
+    parents = {str(map.P): -1}
+    if map.isGoal(map.P):
+        path = getPath(map.G, parents)
         return path
     
     q = Queue()  
     q.enqueue(map.P)
     expanded = []
     path = []
-    parents = {str(map.P): -1}
     
     while not q.isEmpty():
         cur = q.dequeue()
@@ -40,7 +43,7 @@ def BFS(map: SingleFoodSearchProblem) -> list:
         successors = map.successor(cur)
         for v in successors:                
             if v not in expanded and not q.contain(v):
-                if v == map.G:
+                if map.isGoal(v):
                     parents[str(v)] = cur
                     path = getPath(map.G, parents)
                     return path
@@ -58,7 +61,7 @@ def DFS(map: SingleFoodSearchProblem) -> list:
     
     while stack:
         cur = stack.pop()
-        if cur == map.G:
+        if map.isGoal(cur):
             path = getPath(map.G, parents)
             return path
         if cur not in visited:
@@ -85,7 +88,7 @@ def UCS(map: SingleFoodSearchProblem) -> list:
         cur_w, cur = pq.dequeue()
         expanded.append(cur)
     
-        if cur == map.G: 
+        if map.isGoal(cur): 
             path = getPath(map.G, parents)
             return path
         
@@ -102,25 +105,15 @@ def UCS(map: SingleFoodSearchProblem) -> list:
     return path
 
 
-
-# a = SingleFoodSearchProblem()
-# a.load_from_file("input/pacman_single02.txt")
-
-# # # p = BFS(a)
-# # # a.animate(p)
-
-# p2 = BFS(a)
-# a.animate(p2)
+##Multi
 
 
 def BFS_Multi(map: MultiFoodSearchProblem)-> list:
-    # def search(self,map: MultiFoodSearchProblem, map.state: list, map.G: list):
-        # check xem scr co trung map.G k, trung thi delete
-    if map.state in map.G:
-        map.G.remove(map.state)
+    if map.isGoal(map.P):
+        map.G.remove(map.P)
+        
     q = Queue()  
-    # path2 dung de cong path vao 
-    path2 = []
+    path = []
     parents = {str(map.P): -1}
     for i in map.G:
         expanded = []
@@ -133,16 +126,16 @@ def BFS_Multi(map: MultiFoodSearchProblem)-> list:
                 if v not in expanded and not q.contain(v):
                     parents[str(v)] = cur 
                     q.enqueue(v)                
-        path = getPathMulti(map.state, i, parents)
+        
+        path += getPathMulti(map.state, i, parents)
         parents = {str(map.state): i}
-        path2 += path
         map.state = i
-    path2.append("Stop")       
-    return path2
+    path.append("Stop")       
+    return path
 
 def DFS_Multi(map: MultiFoodSearchProblem) -> list:
     parents = {str(map.P): -1}
-    path2 = []
+    path = []
     for g in map.G:
         stack = []
         visited =[]
@@ -150,9 +143,8 @@ def DFS_Multi(map: MultiFoodSearchProblem) -> list:
         while stack:
             cur = stack.pop()
             if cur == g:
-                path = getPathMulti(map.state, g, parents)
+                path += getPathMulti(map.state, g, parents)
                 map.state = g
-                path2 += path
                 
             if cur not in visited:
                 visited.append(cur)
@@ -161,12 +153,12 @@ def DFS_Multi(map: MultiFoodSearchProblem) -> list:
                     if v not in visited:
                         parents[str(v)] = cur
                         stack.append(v)
-    path2.append("Stop")
-    return path2
+    path.append("Stop")
+    return path
 
 def UCS_Multi(map: MultiFoodSearchProblem) -> list:
     parents = {str(map.P): -1}
-    path2 = []
+    path = []
     for g in map.G:
         pq = PriorityQueue()
         pq.enqueue((0, map.state))
@@ -176,8 +168,7 @@ def UCS_Multi(map: MultiFoodSearchProblem) -> list:
             expanded.append(cur)
         
             if cur == g: 
-                path = getPathMulti(map.state ,g , parents)
-                path2 += path
+                path += getPathMulti(map.state ,g , parents)
                 map.state = g
                 
             successors = map.successor(cur)
@@ -189,8 +180,8 @@ def UCS_Multi(map: MultiFoodSearchProblem) -> list:
                     pq.updatePriority(v, cur_w + 1)
                     parents[str(v)] = cur
 
-    path2.append("Stop")
-    return path2
+    path.append("Stop")
+    return path
 
 def getPathMulti(src: list, dst: list, parents: dict):
     path = []
@@ -209,94 +200,62 @@ def getPathMulti(src: list, dst: list, parents: dict):
         else: pathConvert.append("E")
     return pathConvert
 
-# a = MultiFoodSearchProblem()
-# a.load_from_file("input/pacman_multi02.txt")
-# # a.__str__()
-# p =DFS_Multi(a)
-# a.animate(p)
-# #print(p)
 
+##Ex2
 
+#YC2-1
 def euclidean(state: list, map: SingleFoodSearchProblem):
     return ((state[0] - map.G[0])**2 + (state[1] - map.G[1])**2)**0.5
 
 def manhattan(state: list, map: SingleFoodSearchProblem):
     return abs(state[0] + map.G[0]) + abs(state[1] - map.G[1])
 
+#YC2-2
+def food_heuristic(state: list, map: MultiFoodSearchProblem):
+    foods = map.G
+    if(len(foods)==0): return 0
+    distances = ([fn_manhattan(state, food) for food in foods])
+    return sum(distances)
+
 def fn_manhattan(x: list, y: list):
     return abs(x[0] + y[0]) + abs(x[1] - y[1])
 
-# pacman = SingleFoodSearchProblem()
-# pacman.load_from_file("input/pacman_single01.txt")
-
-# print(euclidean(pacman))
-# print(manhattan(pacman))
-
-def food_heuristic(state: MultiFoodSearchProblem):
-    foods = state.G
-    if(len(foods)==0): return 0
-    distances = ([fn_manhattan(state.P, food) for food in foods])
-    return sum(distances)
+#YC2-3
+#A*
+def astar(problem : SingleFoodSearchProblem, fn_heuristic) -> list:
+    expanded = []
+    parents = {str(problem.P): -1}
+    pq = PriorityQueue()
+    pq.enqueue((fn_heuristic(problem.P,problem),0 ,problem.P))
     
-# a = MultiFoodSearchProblem()
-# a.load_from_file("input/pacman_multi02.txt")
-# print(food_heuristic(a))
-
-def gbfs(problem:SingleFoodSearchProblem):
-    start_state = problem.P
-    visited = set()
-    frontier = PriorityQueueHQ()
-    frontier.push(start_state, euclidean(start_state, problem))
+    while not pq.isEmpty():
+        h,c, cur = pq.dequeue()
+        expanded.append(cur)
+        if problem.isGoal(cur):
+            return getPath(problem.G, parents)
+        for s in problem.successor(cur):
+            if s not in expanded:
+                sc = c+1
+                pq.enqueue((fn_heuristic(s,problem)+sc,sc ,s))
+                parents[str(s)] = cur
     
-    while not frontier.isEmpty():
-        state = frontier.pop()
-        
-        if problem.isGoalState(state):
-            return frontier
-        
-        if tuple(state) not in visited:
-            visited.add(tuple(state))
-            successors = problem.successor(state)
-            
-            for successor in successors:
-                if tuple(successor) not in visited:
-                    frontier.push(successor, euclidean(successor, problem))
+    return None  
     
-    return None
-
-
-
-# problem = SingleFoodSearchProblem()
-# problem.load_from_file("input/pacman_single01.txt")
-# actions = gbfs(problem)
-# print(actions.tostring())
-
-
-def astar(problem:SingleFoodSearchProblem):
-    start_node = Node(state=problem.P, action=None, path_cost=0)
-
-    frontier = PriorityQueueHQ()
-    frontier.push(start_node, euclidean(problem.P, problem))
-
-    explored = set()
-
-    while not frontier.isEmpty():
-        node = frontier.pop()
-
-        if problem.isGoalState(node.state):
-            return node.getPath()
-
-        explored.add(tuple(node.state))
-        for child_state in problem.successor(node.state):
-            if tuple(child_state) not in explored:
-                child_node = Node(state=child_state, action='',
-                                  path_cost=euclidean(node.state, problem), parent=node)
-                f_value = child_node.path_cost + euclidean(child_state, problem)
-                frontier.push(child_node, f_value)
-
-    return None
-
-problem = SingleFoodSearchProblem()
-problem.load_from_file("input/pacman_single01.txt")
-actions = astar(problem)
-print(actions)
+#yc2-5
+def gbfs(problem : SingleFoodSearchProblem, fn_heuristic) -> list:
+    visited = [problem.P]
+    parents = {str(problem.P): -1}
+    pq = PriorityQueue()
+    pq.enqueue((fn_heuristic(problem.P,problem), problem.P))
+    
+    while not pq.isEmpty():
+        h, cur = pq.dequeue()
+        if problem.isGoal(cur):
+            return getPath(problem.G, parents)
+        for s in problem.successor(cur):
+            if s not in visited:
+                visited.append(s)
+                pq.enqueue((fn_heuristic(s,problem),s))
+                parents[str(s)] = cur
+    
+    return None       
