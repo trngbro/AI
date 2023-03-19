@@ -20,7 +20,6 @@ class SingleFoodSearchProblem:
         if i != len(self.map) -1 : a.append([i+1,j])
         if j != 0: a.append([i,j-1])
         if j != len(self.map[0]) -1 : a.append([i,j+1])
-
         [b.append(i) for i in a if self.map[i[0]][i[1]] != "%"]
         return b
     
@@ -72,7 +71,6 @@ class SingleFoodSearchProblem:
             enter = input("Press Enter")
             
 class MultiFoodSearchProblem:
-   
     def __init__(self):
         self.map = [] 
         self.P = [] 
@@ -88,7 +86,6 @@ class MultiFoodSearchProblem:
         if i != len(self.map) -1 : a.append([i+1,j])
         if j != 0: a.append([i,j-1])
         if j != len(self.map[0]) -1 : a.append([i,j+1])
-
         [b.append(i) for i in a if self.map[i[0]][i[1]] != "%"]
         return b
     
@@ -142,7 +139,6 @@ class MultiFoodSearchProblem:
             enter = input("Press Enter")
 
 class EightQueenProblem:
-
     def __init__(self):
         self.state = None
         self.n = 8
@@ -151,7 +147,6 @@ class EightQueenProblem:
         with open(file_name, "r") as f:
             lines = f.readlines()
             self.initial_state = [[1 if c == "Q" else 0 for c in line.strip()] for line in lines]
-
 
     def print_board(self, state):
         for row in range(len(state)):
@@ -190,6 +185,6 @@ class EightQueenProblem:
                 break
             self.state = neighbors[neighbor_h.index(min(neighbor_h))]
             '''Mở xem chi tiết từng bước đạt được'''
-            # self.print_board(self.state)
-            # print("\n\n")
+            self.print_board(self.state)
+            print("\n\n")
         return self.state
