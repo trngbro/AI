@@ -38,4 +38,4 @@ pip install random
 
 ## Workspace
 
-[MIT](https://github.com/trngbro/AI)
+[This repository](https://github.com/trngbro/AI)
