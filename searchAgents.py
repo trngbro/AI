@@ -93,7 +93,7 @@ def UCS(map: SingleFoodSearchProblem) -> list:
 
 ##Multi
 
-def BFS_Multi(map)-> list:
+def modifyBFS(map)-> list:
     if map.isGoal(map.P):
         map.G.remove(map.P)
     q = Queue()  
@@ -119,7 +119,7 @@ def BFS_Multi(map)-> list:
     path.append("Stop")       
     return path
 
-def DFS_Multi(map) -> list:
+def modifyDFS(map) -> list:
     parents = {str(map.P): -1}
     path = []
     Goals = map.G
@@ -143,7 +143,7 @@ def DFS_Multi(map) -> list:
     path.append("Stop")
     return path
 
-def UCS_Multi(map) -> list:
+def modifyUCS(map) -> list:
     parents = {str(map.P): -1}
     path = []
     Goals = map.G
