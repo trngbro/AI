@@ -7,6 +7,7 @@ class SingleFoodSearchProblem:
         self.map = [] #map
         self.P = [] #Initial state
         self.G = [] #Goal
+        self.state = [] 
     
     def isGoal(self, state):
         return state == self.G
@@ -32,11 +33,10 @@ class SingleFoodSearchProblem:
                     for j in range(0,len(line)):
                         if line[j] != "\n": a.append(line[j])
                         if line[j] == "P": 
-                            self.P.append(i)
-                            self.P.append(j)
+                            self.P = [i,j]
+                            self.state = self.P
                         if line[j] == ".": 
-                            self.G.append(i)
-                            self.G.append(j)
+                            self.G = [i,j]
                     self.map.append(a)
                     i+=1
     

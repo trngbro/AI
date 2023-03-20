@@ -93,13 +93,16 @@ def UCS(map: SingleFoodSearchProblem) -> list:
 
 ##Multi
 
-def BFS_Multi(map: MultiFoodSearchProblem)-> list:
+def BFS_Multi(map)-> list:
     if map.isGoal(map.P):
         map.G.remove(map.P)
     q = Queue()  
     path = []
     parents = {str(map.P): -1}
-    for i in map.G:
+    Goals = map.G
+    if isinstance(map, SingleFoodSearchProblem): Goals = [map.G]
+    
+    for i in Goals:
         expanded = []
         q.enqueue(map.state)
         while not q.isEmpty():
@@ -116,10 +119,12 @@ def BFS_Multi(map: MultiFoodSearchProblem)-> list:
     path.append("Stop")       
     return path
 
-def DFS_Multi(map: MultiFoodSearchProblem) -> list:
+def DFS_Multi(map) -> list:
     parents = {str(map.P): -1}
     path = []
-    for g in map.G:
+    Goals = map.G
+    if isinstance(map, SingleFoodSearchProblem): Goals = [map.G]
+    for g in Goals:
         stack = []
         visited =[]
         stack = [map.state]
@@ -138,10 +143,12 @@ def DFS_Multi(map: MultiFoodSearchProblem) -> list:
     path.append("Stop")
     return path
 
-def UCS_Multi(map: MultiFoodSearchProblem) -> list:
+def UCS_Multi(map) -> list:
     parents = {str(map.P): -1}
     path = []
-    for g in map.G:
+    Goals = map.G
+    if isinstance(map, SingleFoodSearchProblem): Goals = [map.G]
+    for g in Goals:
         pq = PriorityQueue()
         pq.enqueue((0, map.state))
         expanded = []
@@ -215,26 +222,34 @@ def astar(problem : SingleFoodSearchProblem, fn_heuristic) -> list:
                 pq.enqueue((fn_heuristic(s,problem)+sc,sc ,s))
                 parents[str(s)] = cur
     return None  
-    
+
 #YC2-4
 #Modify A* 
 
 def modifyAstar(problem, fn_heuristic) -> list:
-    expanded = []
+    path = []
     parents = {str(problem.P): -1}
-    pq = PriorityQueue()
-    pq.enqueue((fn_heuristic(problem.P, problem), 0, problem.P))
-    while not pq.isEmpty():
-        h, c, cur = pq.dequeue()
-        expanded.append(cur)
-        if problem.isGoal(cur):
-            return getPathMulti(problem.G, parents)
-        for s in problem.successor(cur):
-            if s not in expanded:
-                sc = c + 1
-                pq.enqueue((fn_heuristic(s, problem) + sc, sc, s))
-                parents[str(s)] = cur
-    return None
+    Goals = problem.G
+    if isinstance(problem, SingleFoodSearchProblem): Goals = [problem.G]
+    
+    for g in Goals:
+        expanded = []
+        pq = PriorityQueue()
+        pq.enqueue((fn_heuristic(problem.state,problem),0 ,problem.state))
+        while not pq.isEmpty():
+            h,c, cur = pq.dequeue()
+            expanded.append(cur)
+            if cur == g:
+                path += getPathMulti(problem.state, g, parents)
+                problem.state = g
+                break
+            for s in problem.successor(cur):
+                if s not in expanded:
+                    sc = c+1
+                    pq.enqueue((fn_heuristic(s,problem)+sc,sc ,s))
+                    parents[str(s)] = cur
+    path.append("Stop")
+    return path  
 
 #yc2-5
 def gbfs(problem : SingleFoodSearchProblem, fn_heuristic) -> list:
