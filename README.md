@@ -1,11 +1,12 @@
-# Midtern AI
+# Final AI
+Only AI.ipynb file
 
-Authors:
-- Trung Nghia Nguyen
-- Tran Dinh Phuc
-- Ho Thinh Phat
+## Usage
+Run each step in file on [pip](https://colab.research.google.com/github/trngbro/AI/blob/main/AI.ipynb)
 
 
+# Midtern AI 
+Expection AI.ipynb file
 ## Requirements
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
