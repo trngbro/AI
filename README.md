@@ -2,7 +2,7 @@
 Only AI.ipynb file
 
 ## Usage
-Run each step in file on [pip](https://colab.research.google.com/github/trngbro/AI/blob/main/AI.ipynb)
+Run each step in file on [Google Colab](https://colab.research.google.com/github/trngbro/AI/blob/main/AI.ipynb)
 
 
 # Midtern AI 
