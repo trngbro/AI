@@ -4,6 +4,12 @@ Only AI.ipynb file
 ## Usage
 Run each step in file on [Google Colab](https://colab.research.google.com/github/trngbro/AI/blob/main/AI.ipynb)
 
+# Progress 20% AI
+Only Progress20.ipynb file
+
+## Usage
+Run each step in file on [Google Colab](https://colab.research.google.com/github/trngbro/AI/blob/main/Progress20.ipynb)
+
 
 # Midtern AI 
 Except AI.ipynb file
