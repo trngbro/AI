@@ -12,7 +12,8 @@ Run each step in file on [Google Colab](https://colab.research.google.com/github
 
 
 # Midtern AI 
-Except AI.ipynb file
+Except Jupyter Notebooks
+
 ## Requirements
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
