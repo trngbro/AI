@@ -185,6 +185,6 @@ class EightQueenProblem:
                 break
             self.state = neighbors[neighbor_h.index(min(neighbor_h))]
             '''Mở xem chi tiết từng bước đạt được'''
-            self.print_board(self.state)
-            print("\n\n")
+            # self.print_board(self.state)
+            # print("\n\n")
         return self.state
